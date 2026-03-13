@@ -162,3 +162,6 @@ series = np.array([r.extra.get('my_metric', np.nan) for r in stats.records])
 
 For a cleaner solution, subclass `SimulationStats` and override `record()`.
 The docstring in `stats.py` shows the exact pattern.
+
+
+to dodala ala :))
