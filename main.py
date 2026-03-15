@@ -24,6 +24,7 @@ from reproduction import AsexualReproduction
 from visualization import plot_population, plot_frame, plot_stats
 from stats import SimulationStats
 
+from environment import SeasonalCyclicEnvironment
 
 # ---------------------------------------------------------------------------
 # Główna pętla symulacji
