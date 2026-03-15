@@ -6,7 +6,7 @@ import numpy as np
 # PARAMETRY POPULACJI
 # -------------------
 N = 100           # liczba osobników w populacji
-n = 4             # wymiar przestrzeni fenotypowej
+n = 2             # wymiar przestrzeni fenotypowej- zmieniam z 4 na 2 bo dwie cechy fen (wysokosc i korzeń)
 
 # Rozrzut początkowych fenotypów wokół optimum.
 # Zbyt duży → większość osobników ma fitness ≈ 0 i wymiera w pierwszym pokoleniu.
@@ -58,6 +58,16 @@ alpha0 = np.zeros(n)       # początkowy optymalny fenotyp
 c      = np.full(n, 0.01)  # kierunkowa zmiana α na pokolenie ("globalne ocieplenie")
 delta  = 0.01              # odchylenie std losowych fluktuacji wokół c
 max_generations = 200      # liczba pokoleń do zasymulowania
+
+#_____________
+# nowe parametry dla srodowiska cyklicznego
+h0 = 0.0  # srednia optymalna wysokosc
+Ah =2.0 # amplituda wahań dla wysokosci
+r0= 0.0  # srednia optymalna długość korzemia
+Ar= 1.0 # amplituda wahan dla korzenia
+T = 50 # 50 pokolen to jeden cykl
+
+
 
 # ----------------------
 # PARAMETRY REPRODUKCJI
