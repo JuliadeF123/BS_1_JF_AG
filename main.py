@@ -16,15 +16,13 @@ import os
 import numpy as np
 
 import config
-from environment import LinearShiftEnvironment
+from environment import SeasonalCyclicEnvironment
 from population import Population
 from mutation import IsotropicMutation
 from selection import TwoStageSelection
 from reproduction import AsexualReproduction
 from visualization import plot_population, plot_frame, plot_stats
 from stats import SimulationStats
-
-from environment import SeasonalCyclicEnvironment
 
 # ---------------------------------------------------------------------------
 # Główna pętla symulacji
@@ -145,11 +143,16 @@ def main():
         np.random.seed(config.seed)
 
     # --- Inicjalizacja komponentów ---
-    env = LinearShiftEnvironment(
-        alpha_init=config.alpha0,
-        c=config.c,
-        delta=config.delta,
+
+    env = SeasonalCyclicEnvironment(
+        h0=config.h0,
+        Ah=config.Ah,
+        r0=config.r0,
+        Ar=config.Ar,
+        T=config.T,
+        theta=config.theta,
     )
+    
     pop = Population(
         size=config.N,
         n_dim=config.n,
