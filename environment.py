@@ -98,4 +98,4 @@ class SeasonalCyclicEnvironment(EnvironmentDynamics):
 
 
 # Alias dla kompatybilności wstecznej
-Environment = LinearShiftEnvironment
+Environment = SeasonalCyclicEnvironment

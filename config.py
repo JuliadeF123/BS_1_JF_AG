@@ -62,9 +62,9 @@ max_generations = 200      # liczba pokoleń do zasymulowania
 #_____________
 # nowe parametry dla srodowiska cyklicznego
 h0 = 0.0  # srednia optymalna wysokosc
-Ah =2.0 # amplituda wahań dla wysokosci
+Ah =0.05 # amplituda wahań dla wysokosci
 r0= 0.0  # srednia optymalna długość korzemia
-Ar= 1.0 # amplituda wahan dla korzenia
+Ar= 0.05 # amplituda wahan dla korzenia
 T = 50 # 50 pokolen to jeden cykl
 theta= 0.0  #faza poczatkowa
 
