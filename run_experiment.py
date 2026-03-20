@@ -72,7 +72,7 @@ def _run_replicate(args: tuple) -> tuple:
 
     import numpy as np
     from population import Population
-    from environment import LinearShiftEnvironment
+    from environment import SeasonalCyclicEnvironment
     from selection import TwoStageSelection
     from reproduction import AsexualReproduction
     from mutation import IsotropicMutation
@@ -88,7 +88,15 @@ def _run_replicate(args: tuple) -> tuple:
     c = np.full(n, c_raw) if np.isscalar(c_raw) else np.array(c_raw, dtype=float)
 
     pop = Population(cfg['N'], n, cfg['init_scale'], alpha_init=alpha0)
-    env = LinearShiftEnvironment(alpha0.copy(), c.copy(), cfg.get('delta', 0.01))
+    env = SeasonalCyclicEnvironment(
+            h0=cfg.get('h0', 0.0),
+            Ah=cfg.get('Ah', 1.0),
+            r0=cfg.get('r0', 0.0),
+            Ar=cfg.get('Ar', 1.0),
+            T=cfg['T'],
+            theta=cfg.get('theta', 0.0)
+        )
+    alpha0 = env.get_optimal_phenotype()    
     sel = TwoStageSelection(cfg['sigma'], cfg['threshold'], cfg['N'])
     rep = AsexualReproduction()
     mut = IsotropicMutation(cfg['mu'], cfg['mu_c'], cfg['xi'])
