@@ -81,13 +81,8 @@ def _run_replicate(args: tuple) -> tuple:
     np.random.seed(seed)
 
     n = cfg['n']
-    alpha0 = np.zeros(n)
 
-    # 'c' can be a scalar (same drift in every dimension) or a list
-    c_raw = cfg.get('c', 0.01)
-    c = np.full(n, c_raw) if np.isscalar(c_raw) else np.array(c_raw, dtype=float)
 
-    pop = Population(cfg['N'], n, cfg['init_scale'], alpha_init=alpha0)
     env = SeasonalCyclicEnvironment(
             h0=cfg.get('h0', 0.0),
             Ah=cfg.get('Ah', 1.0),
@@ -96,7 +91,9 @@ def _run_replicate(args: tuple) -> tuple:
             T=cfg['T'],
             theta=cfg.get('theta', 0.0)
         )
-    alpha0 = env.get_optimal_phenotype()    
+    alpha0 = env.get_optimal_phenotype() 
+    
+    pop = Population(cfg['N'], n, cfg['init_scale'], alpha_init=alpha0)
     sel = TwoStageSelection(cfg['sigma'], cfg['threshold'], cfg['N'])
     rep = AsexualReproduction()
     mut = IsotropicMutation(cfg['mu'], cfg['mu_c'], cfg['xi'])
@@ -234,7 +231,7 @@ def run_one(config_path: Path | str, n_workers: int | None = None) -> Path:
     with open(config_path, encoding='utf-8') as f:
         cfg = json.load(f)
 
-    required = ['name', 'n', 'N', 'sigma', 'xi', 'mu', 'mu_c', 'c',
+    required = ['name', 'n', 'N', 'sigma', 'xi', 'mu', 'mu_c', 
                 'threshold', 'init_scale', 'max_generations', 'n_replicates', 'seeds']
     missing = [k for k in required if k not in cfg]
     if missing:

@@ -55,7 +55,6 @@ threshold = 0.01  # próg selekcji progowej
 # UWAGA: alpha0 i c są wyprowadzane z n.
 # Wystarczy zmienić n powyżej – wektory środowiska dopasują się automatycznie.
 alpha0 = np.zeros(n)       # początkowy optymalny fenotyp
-
 max_generations = 200      # liczba pokoleń do zasymulowania
 
 
