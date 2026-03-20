@@ -17,7 +17,7 @@ base_cfg = {
     "n_replicates": 20, "seeds": list(range(20)),
 
     # uzywane do grupowania pozniejszzego wyniku, wiec dla kazdego parametru zmieniamy
-    "group": "Seasonality Sweep"
+    "group": "dlugosc cyklu"
 }
 
 for ZMIENNE in periods:
