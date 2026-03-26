@@ -7,17 +7,17 @@ experiment_dir = Path("experiments")
 
 # zakres wartosci jaki ma byc symulowany
 periods = [10, 20, 50, 100, 200, 500, 1000]
-amplitudes = [0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5]
+amplitudes = [0.1, 0.3, 0.5, 1.0, 1.5, 2.0, 3.0]#[0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5]
 
 # konfiguracja
 
 # ______________________________dla zmiany T______________________________
 base_cfg = {
-    "n": 2, "N": 100, "sigma": 0.2, "xi": 0.05, "mu": 0.1, "mu_c": 0.5,
+    "n": 2, "N": 100, "sigma": 0.1, "xi": 0.05, "mu": 0.1, "mu_c": 0.5,
 
     "h0": 0.0, "Ah": 0.05, "r0": 0.0, "Ar": 0.05, "theta": 0.0,
     
-    "threshold": 0.01, "init_scale": 0.1, "max_generations": 1000, 
+    "threshold": 0.05, "init_scale": 0.1, "max_generations": 1000, 
     "n_replicates": 20, "seeds": list(range(20)),
 
     # uzywane do grupowania pozniejszzego wyniku, wiec dla kazdego parametru zmieniamy
@@ -40,11 +40,11 @@ print(f"Generated {len(periods)} experiments in {experiment_dir}/")
 
 # ______________________________dla zmiany A______________________________
 base_cfg = {
-    "n": 2, "N": 100, "sigma": 0.2, "xi": 0.05, "mu": 0.1, "mu_c": 0.5,
+    "n": 2, "N": 100, "sigma": 0.1, "xi": 0.05, "mu": 0.1, "mu_c": 0.5, #jula zmieniona sigma
 
     "h0": 0.0, "r0": 0.0, "T": 100, "theta": 0.0, 
 
-    "threshold": 0.01, "init_scale": 0.1, "max_generations": 1000, 
+    "threshold": 0.05, "init_scale": 0.1, "max_generations": 1000, #jula zmienione threshold
     "n_replicates": 20, "seeds": list(range(20)),
     # uzywane do grupowania pozniejszzego wyniku, wiec dla kazdego parametru zmieniamy
     "group": "wyczulenie_na_amplitude(oba)" 
