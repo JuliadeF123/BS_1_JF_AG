@@ -9,7 +9,7 @@ sequence using the same logic as run_experiment.py.
 Usage examples
 --------------
 # All configs in a subfolder:
-    python run_many_experiments.py experiments/drift_exploration/
+    python run_many_experiments.py experiments/
 
 # Shell-glob pattern (quote to prevent shell expansion if needed):
     python run_many_experiments.py "experiments/drift_c*"
