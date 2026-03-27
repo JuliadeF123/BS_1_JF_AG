@@ -82,14 +82,16 @@ def _run_replicate(args: tuple) -> tuple:
 
     n = cfg['n']
 
-
+    # Pass shock_prob, shock_magnitude if they exist (default to given defaults)
     env = SeasonalCyclicEnvironment(
             h0=cfg.get('h0', 0.0),
             Ah=cfg.get('Ah', 1.0),
             r0=cfg.get('r0', 0.0),
             Ar=cfg.get('Ar', 1.0),
             T=cfg['T'],
-            theta=cfg.get('theta', 0.0)
+            theta=cfg.get('theta', 0.0),
+            shock_prob=cfg.get('shock_prob', 0.1),
+            shock_magnitude=cfg.get('shock_magnitude', 1.0),
         )
     alpha0 = env.get_optimal_phenotype() 
     
@@ -231,8 +233,10 @@ def run_one(config_path: Path | str, n_workers: int | None = None) -> Path:
     with open(config_path, encoding='utf-8') as f:
         cfg = json.load(f)
 
-    required = ['name', 'n', 'N', 'sigma', 'xi', 'mu', 'mu_c', 
+    required = ['name', 'n', 'N', 'sigma', 'xi', 'mu', 'mu_c', 'shock_prob', 'shock_magnitude',
                 'threshold', 'init_scale', 'max_generations', 'n_replicates', 'seeds']
+    # Optional: include them in required if you want the config to always specify them:
+    # required += ['shock_prob', 'shock_magnitude']
     missing = [k for k in required if k not in cfg]
     if missing:
         sys.exit(f"Error: config is missing required keys: {missing}")

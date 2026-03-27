@@ -72,6 +72,11 @@ Ar= 0.05 # amplituda wahan dla korzenia
 T = 50 # 50 pokolen to jeden cykl
 theta= 0.0  #faza poczatkowa
 
+# --- Parametry nagłego szoku środowiskowego (sudden shock) ---
+# shock_prob: prawdopodobieństwo nagłego skoku w każdym pokoleniu (np. 0.01)
+# shock_magnitude: odchylenie std rysowania losowego wektora skoku (np. 2.0)
+shock_prob = 0.01         # prawdopodobieństwo wystąpienia nagłego szoku w pokoleniu
+shock_magnitude = 1.0     # siła (stddev) nagłego przesunięcia optimum
 
 # ----------------------
 # PARAMETRY REPRODUKCJI
