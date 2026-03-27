@@ -528,7 +528,7 @@ elif page == "Single run":
     if generate_btn:
         with st.spinner("Running simulation and rendering frames…"):
             from population   import Population
-            from environment  import LinearShiftEnvironment, SeasonalCyclicEnvironment
+            from environment  import SeasonalCyclicEnvironment
             from selection    import TwoStageSelection
             from reproduction import AsexualReproduction
             from mutation     import IsotropicMutation
@@ -548,11 +548,12 @@ elif page == "Single run":
             #     alpha0.copy(), c_arr.copy(), cfg.get("delta", 0.01)
             # )
             env = SeasonalCyclicEnvironment(
-                period=cfg.get("T", 50),
-                amplitude=cfg.get("Ah", 1.0),
+                T=cfg.get("T", 50),
+                Ah=cfg.get("Ah", 1.0),
+                Ar=cfg.get("Ar", 1.0),
                 theta=cfg.get("theta", 0.0),
-                n=cfg["n"],
-                baseline=np.zeros(cfg["n"]),
+                h0=cfg.get("h0", 0.0),
+                r0=cfg.get("r0", 0.0),
             )
             sel = TwoStageSelection(cfg["sigma"], cfg["threshold"], cfg["N"])
             rep = AsexualReproduction()
