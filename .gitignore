@@ -7,3 +7,15 @@ __pycache__/
 .DS_Store
 simulation_stats.png
 results/
+# Ignoruj foldery z wygenerowanymi plikami i wynikami
+experiments/
+results/
+
+# Ignoruj wszystkie wykresy i animacje
+*.png
+*.gif
+*.jpg
+*.ipynb
+# Ignoruj pliki tymczasowe Pythona (dobra praktyka)
+__pycache__/
+*.pyc
