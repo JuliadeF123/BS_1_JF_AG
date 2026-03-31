@@ -9,7 +9,7 @@ simulation_stats.png
 results/
 # Ignoruj foldery z wygenerowanymi plikami i wynikami
 experiments/
-results/
+# results/
 
 # Ignoruj wszystkie wykresy i animacje
 *.png
