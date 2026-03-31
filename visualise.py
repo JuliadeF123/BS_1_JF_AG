@@ -1,56 +1,57 @@
 import pandas as pd
+import matplotlib.pyplot as plt
 import os
 import glob
-from scipy.stats import fisher_exact
 
-# --- KONFIGURACJA ---
+# Ścieżka bazowa, gdzie znajdują się foldery z wynikami
 base_path = 'results/' 
-periods = [1, 10, 50, 150, 200, 500, 1000]  # Chcemy porównywać różne T
-amplitudes = [
-      "A0_1", "A0_3",  "A0_5", 'A1_0','A1_2','A1_5', 'A2_0','A3_0', 'A6_0'
-]  # Przez wszystkie amplitudy - zgodnie z generacją albo wynikami
-target_theta = "th0_0"
-n_replicates = 20
 
-# Robimy porównanie dla różnych T versus bazowego T (tu: pierwsze z periods)
-base_T = periods[0]
-header_periods = " | ".join([
-    f"T={t:>5} (p-value)" for t in periods[1:]
-])
-print(f"{'Amplituda':>10} | {'Base_T ('+str(base_T)+')':>10} | {header_periods}")
-print("-" * 120)
+# Lista wartości T, które chcemy wyplotować
+target_T = [ 1, 10, 20, 50, 80, 100, 150, 200, 500, 1000]
+a = '0_1'
+target_theta = '0_0'
+plt.figure(figsize=(12, 7))
 
-def format_p_value(p):
-    # Notacja wykładnicza dla bardzo małych p-value
-    if p < 1e-4:
-        return f"{p:.1e}"
+# Słownik do przechowywania ścieżek (zakładamy, że nazwa folderu zawiera T1, T100 itd.)
+# Używamy dopasowania wzorca, aby znaleźć foldery dla konkretnych T
+for t_val in target_T:
+    # Szukamy folderów, które mają w nazwie T{t_val}_ (np. T100_)
+    # Wzorzec dopasowuje np. "grid_A0_1_T100_th1_57_..."
+    pattern = os.path.join(base_path, f"*_A{a}_T{t_val}_th{target_theta}*")
+    folders = glob.glob(pattern)
+    
+    if not folders:
+        print(f"Nie znaleziono folderu dla T={t_val}")
+        continue
+    
+    # Bierzemy pierwszy znaleziony folder dla danej wartości T
+    folder_path = folders[0]
+    file_path = os.path.join(folder_path, 'summary.csv') # upewnij się co do nazwy pliku
+    
+    if os.path.exists(file_path):
+        df = pd.read_csv(file_path)
+        
+        # Rysowanie linii średniej
+        line, = plt.plot(df['generation'], df['mean_fitness_mean'], label=f'T = {t_val}')
+        
+        # Opcjonalnie: Dodanie obszaru błędu (± standard deviation)
+        plt.fill_between(
+            df['generation'], 
+            df['mean_fitness_mean'] - df['mean_fitness_std'], 
+            df['mean_fitness_mean'] + df['mean_fitness_std'], 
+            color=line.get_color(), 
+            alpha=0.1
+        )
     else:
-        return f"{p:.4f}"
+        print(f"Nie znaleziono pliku CSV w {folder_path}")
 
-def get_ext(amplitude, t):
-    search = os.path.join(base_path, f"*_{amplitude}_T{t}_{target_theta}*")
-    f = glob.glob(search)
-    if f and os.path.exists(os.path.join(f[0], 'summary.csv')):
-        return int(pd.read_csv(os.path.join(f[0], 'summary.csv'))['extinct_count'].iloc[-1])
-    return None
+# Formatowanie wykresu
+plt.title(f"Ewolucja Mean Fitness w zależności od okresu T dla A={a.replace('_', '.')}, theta={target_theta.replace('_', '.')}", fontsize=14)
+plt.xlabel('Pokolenie (Generation)', fontsize=12)
+plt.ylabel('Mean Fitness', fontsize=12)
+plt.legend(title="Okres (T)")
+plt.grid(True, linestyle='--', alpha=0.6)
+plt.ylim(0, 1.05) # Fitness zazwyczaj jest w zakresie 0-1
 
-for amplitude in amplitudes:
-    # Podstawowa wartość extinct_count dla bazowego T
-    ext_base = get_ext(amplitude, base_T)
-    base_frac = ext_base / n_replicates if ext_base is not None else None
-    row_str = f"{amplitude:>10} | {base_frac if base_frac is not None else 'N/A':>10} | "
-
-    for t in periods[1:]:
-        ext_comp = get_ext(amplitude, t)
-        if ext_base is not None and ext_comp is not None:
-            frac_comp = ext_comp / n_replicates
-            # Macierz 2x2: [[Ext_Base, Sur_Base], [Ext_Comp, Sur_Comp]]
-            table = [[ext_base, n_replicates - ext_base],
-                     [ext_comp, n_replicates - ext_comp]]
-            _, p_val = fisher_exact(table)
-            # Korekta Bonferroniego na liczbę testów
-            sig = "*" if p_val < (0.05 / (len(periods)-1)) else " "
-            row_str += f"{frac_comp:>6} {sig:1} ({format_p_value(p_val)}) | "
-        else:
-            row_str += f"{'N/A':>10} ( N/A ) | "
-    print(row_str)
+plt.tight_layout()
+plt.show()

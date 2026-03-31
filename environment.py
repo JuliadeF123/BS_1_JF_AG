@@ -82,9 +82,9 @@ class SeasonalCyclicEnvironment(EnvironmentDynamics):
 
     def _update_alpha(self) -> None:
         """Pomocniczo przelicza alpha(t) na podstawie bieżącego t."""
-        phase = 2.0 * np.pi * self.t / self.T + self.theta
+        phase = 2.0 * np.pi * self.t / self.T
         alpha_h = self.h0 + self.Ah * np.sin(phase)
-        alpha_r = self.r0 + self.Ar * np.sin(phase)
+        alpha_r = self.r0 + self.Ar * np.sin(phase + self.theta)
         self.alpha = np.array([alpha_h, alpha_r], dtype=float)
 
     def update(self) -> None:
