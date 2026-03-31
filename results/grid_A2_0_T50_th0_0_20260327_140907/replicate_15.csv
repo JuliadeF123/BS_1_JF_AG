@@ -1,0 +1,4 @@
+generation,mean_fitness,distance_from_optimum,phenotype_variance,population_size,n_parents,median_offspring,max_offspring,extinct
+0,0.7051638458180339,0.018762022482256238,0.003992421673628915,100,59,1.0,4,0
+1,0.25601451281732607,0.16345912384782288,0.000566881923755646,100,65,1.0,4,0
+2,,,,,,,,1
